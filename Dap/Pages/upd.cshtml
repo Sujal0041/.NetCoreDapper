@@ -1,0 +1,95 @@
+﻿@page "{id:int}"
+@model Dap.Pages.UpdModel
+@{
+    ViewData["Title"] = "Edit Entry";
+}
+
+<div class="container mt-4">
+    <h2>Edit Entry</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Entry.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Entry.IsCorporate" class="form-label"></label>
+            <input asp-for="Entry.IsCorporate" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.ParentId" class="form-label"></label>
+            <input asp-for="Entry.ParentId" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.Alias" class="form-label"></label>
+            <input asp-for="Entry.Alias" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.FullName" class="form-label"></label>
+            <input asp-for="Entry.FullName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.PuraName" class="form-label"></label>
+            <input asp-for="Entry.PuraName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.ShortName" class="form-label"></label>
+            <input asp-for="Entry.ShortName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.StreetName" class="form-label"></label>
+            <input asp-for="Entry.StreetName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.StreetNameLocale" class="form-label"></label>
+            <input asp-for="Entry.StreetNameLocale" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.WardNumber" class="form-label"></label>
+            <input asp-for="Entry.WardNumber" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.WardNumberLocale" class="form-label"></label>
+            <input asp-for="Entry.WardNumberLocale" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.LocalMNC" class="form-label"></label>
+            <input asp-for="Entry.LocalMNC" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.LocalMNC_Locale" class="form-label"></label>
+            <input asp-for="Entry.LocalMNC_Locale" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.City" class="form-label"></label>
+            <input asp-for="Entry.City" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.City_Locale" class="form-label"></label>
+            <input asp-for="Entry.City_Locale" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.District" class="form-label"></label>
+            <input asp-for="Entry.District" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Entry.District_Locale" class="form-label"></label>
+            <input asp-for="Entry.District_Locale" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-page="/ViewEntries" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

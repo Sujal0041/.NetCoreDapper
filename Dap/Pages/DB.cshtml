@@ -1,0 +1,76 @@
+﻿@page
+@model Dap.Pages.ViewEntriesModel
+@{
+    ViewData["Title"] = "All Form Entries";
+}
+
+<div class="container mt-4" style="margin-left: -190px;">
+    <h2 class="mb-3">All Form Entries</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>IsCorporate</th>
+                <th>ParentId</th>
+                <th>Alias</th>
+                <th>FullName</th>
+                <th>PuraName</th>
+                <th>ShortName</th>
+                <th>StreetName</th>
+                <th>StreetNameLocale</th>
+                <th>WardNumber</th>
+                <th>WardNumberLocale</th>
+                <th>LocalMNC</th>
+                <th>LocalMNC_Locale</th>
+                <th>City</th>
+                <th>City_Locale</th>
+                <th>District</th>
+                <th>District_Locale</th>
+                <th>Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.Entries)
+            {                       
+                <tr>
+                        <td>@entry.Id</td>
+                        <td>@entry.IsCorporate</td>
+                        <td>@entry.ParentId</td>
+                        <td>@entry.Alias</td>
+                        <td>@entry.FullName</td>
+                        <td>@entry.PuraName</td>
+                        <td>@entry.ShortName</td>
+                        <td>@entry.StreetName</td>
+                        <td>@entry.StreetNameLocale</td>
+                        <td>@entry.WardNumber</td>
+                        <td>@entry.WardNumberLocale</td>
+                        <td>@entry.LocalMNC</td>
+                        <td>@entry.LocalMNC_Locale</td>
+                        <td>@entry.City</td>
+                        <td>@entry.City_Locale</td>
+                        <td>@entry.District</td>
+                        <td>@entry.District_Locale</td>
+                        <td>
+
+    <form method="post" asp-page-handler="Delete">
+        <input type="hidden" name="id" value="@entry.Id" />
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?');">
+            Delete
+        </button>
+                            <a href="/upd/@entry.Id" class="btn btn-warning btn-sm">Edit</a>
+
+
+    </form>
+</td>
+
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+

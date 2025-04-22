@@ -1,0 +1,89 @@
+﻿@page
+@model Dap.Pages.FormModel
+@{
+}
+
+<div class="container mt-5">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="IsCorporate">Is Corporate?</label>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="checkbox" asp-for="Branch.IsCorporate" />
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.ParentId" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.ParentId" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.Alias" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.Alias" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.FullName" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.FullName" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.PuraName" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.PuraName" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.ShortName" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.ShortName" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.StreetName" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.StreetName" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.StreetNameLocale" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.StreetNameLocale" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.WardNumber" class="form-label"></label>
+                <input type="number" class="form-control" asp-for="Branch.WardNumber" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.WardNumberLocale" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.WardNumberLocale" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.LocalMNC" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.LocalMNC" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.LocalMNC_Locale" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.LocalMNC_Locale" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.City" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.City" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.City_Locale" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.City_Locale" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.District" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.District" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Branch.District_Locale" class="form-label"></label>
+                <input type="text" class="form-control" asp-for="Branch.District_Locale" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save & Continue</button>
+    </form>
+</div>
