@@ -4,9 +4,11 @@ using Npgsql;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dap.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class ViewEntriesModel : PageModel
     {
         private readonly IConfiguration _config;
@@ -17,16 +19,12 @@ namespace Dap.Pages
         {
             _config = config;
         }
-
-        // OnGet method to fetch all entries from the database
         public void OnGet()
         {
             using var conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection"));
             string sql = "SELECT * FROM formdata ORDER BY id";
             Entries = conn.Query<Entry>(sql).ToList();
         }
-
-        // OnPostDelete method for deleting an entry by ID
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             try
@@ -42,9 +40,6 @@ namespace Dap.Pages
                 return Page();
             }
         }
-
-
-
     }
     public class Entry
     {
