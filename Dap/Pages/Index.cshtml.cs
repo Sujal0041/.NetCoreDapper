@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace Dap.Pages
 {
@@ -12,9 +13,15 @@ namespace Dap.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var token = Request.Cookies["jwtToken"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                return RedirectToPage("/DB");
+            }
 
+            return Page();
         }
     }
 }

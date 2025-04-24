@@ -1,4 +1,5 @@
 ﻿@{
+    // Check if the JWT token exists in cookies to determine if the user is logged in
     var isLoggedIn = Context.Request.Cookies["jwtToken"] != null;
 }
 
@@ -15,47 +16,51 @@
 <body>
     <header>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
-            <!-- Container wrapper -->
-            <div class="container">
-                <!-- Navbar brand -->
-               
-                <!-- Toggle button -->
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarButtonsExample"
-                        aria-controls="navbarButtonsExample"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Home</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!-- Show DB link if the user is authenticated -->
+                        @if (isLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Form">Form</a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="/DB">DB</a>
+                            </li>
 
-                <!-- Collapsible wrapper -->
-                <div class="collapse navbar-collapse" id="navbarButtonsExample">
-                    <!-- Left links -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link fw-semibold" href="/">Dapper</a>
-                        </li>
+                        }
+
+                        <!-- Show Login and Sign Up links if the user is not authenticated -->
+                        @if (!isLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Signup">Sign Up</a>
+                            </li>
+                        }
+
+                        <!-- Show Logout button if the user is authenticated -->
+                         @if (isLoggedIn) 
+                         { 
+                            <li class="nav-item"> 
+                                 <form method="post" asp-page-handler="Logout" class="form-inline"> 
+                                     <button type="submit" class="btn btn-danger">Log Out</button> 
+                                 </form> 
+                             </li> 
+                         } 
                     </ul>
-                    <!-- Left links -->
-
-                    <div class="d-flex align-items-center">
-                        <a href="/Login" class="btn btn-link px-3 me-2 text-decoration-none">
-                            Login
-                        </a>
-                        <a href="/Signup" class="btn btn-primary me-2">
-                            Sign Up
-                        </a>
-                    </div>
                 </div>
-                <!-- Collapsible wrapper -->
             </div>
-            <!-- Container wrapper -->
         </nav>
-        <!-- Navbar -->
-
     </header>
 
     <div class="container">
@@ -63,8 +68,6 @@
             @RenderBody()
         </main>
     </div>
-
-    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 
 namespace Dap.Pages
 {
@@ -7,11 +8,11 @@ namespace Dap.Pages
     {
         public IActionResult OnPostLogout()
         {
-            // Delete the correct JWT cookie
+            // Clear the JWT token cookie
             Response.Cookies.Delete("jwtToken");
 
-            // Redirect to login page
-            return RedirectToPage("/Login");
+            // Redirect to the home page or login page after logout
+            return RedirectToPage("/Index");
         }
     }
 }
