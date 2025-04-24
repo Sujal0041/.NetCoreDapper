@@ -1,25 +1,24 @@
+using Dap.Models;
+using Dap.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Dap.Services;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using Dap.Models;
+using Microsoft.IdentityModel.Tokens;
 
-namespace Dap.Pages // <--- namespace must match the folder structure & project name
+namespace Dap.Pages
 {
     public class LoginModel : PageModel
     {
         private readonly IUserService _userService;
-        private readonly IConfiguration _config;
+        private readonly JwtSettings _jwtSettings;
 
-        public LoginModel(IUserService userService, IConfiguration config)
+        public LoginModel(IUserService userService, IOptions<JwtSettings> jwtSettings)
         {
             _userService = userService;
-            _config = config;
+            _jwtSettings = jwtSettings.Value;
         }
 
         [BindProperty]
@@ -28,36 +27,51 @@ namespace Dap.Pages // <--- namespace must match the folder structure & project 
         [BindProperty]
         public string Password { get; set; }
 
-        public string? Token { get; set; }
+        public string ErrorMessage { get; set; }
 
-        public void OnGet() { }
+        public IActionResult OnGet()
+        {
+            return Page();
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userService.GetUser(Email, Password);
-
             if (user == null)
-                return Unauthorized();
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(60),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                ErrorMessage = "Invalid credentials.";
+                return Page();
+            }
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            Token = tokenHandler.WriteToken(token);
+            var claims = new[]
+            {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim("role", user.Role),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
 
-            return Content(Token);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
+                signingCredentials: creds);
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes)
+            });
+
+            return RedirectToPage("/Home");
         }
+
     }
 }

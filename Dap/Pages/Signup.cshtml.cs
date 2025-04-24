@@ -36,15 +36,12 @@ namespace Dap.Pages
                 return Page();
             }
 
-            // Hash the password (you can use any password hashing method)
-            string hashedPassword = HashPassword(Password);
-
             // Create the new user
             var newUser = new AppUser
             {
                 Username = Username,
                 Email = Email,
-                PasswordHash = hashedPassword,
+                PasswordHash = Password, // Store the password directly (not recommended in production)
                 Role = "User" // Default role is User
             };
 
@@ -58,24 +55,6 @@ namespace Dap.Pages
 
             ModelState.AddModelError(string.Empty, "Username or Email already exists.");
             return Page();
-        }
-
-        private string HashPassword(string password)
-        {
-            var salt = new byte[16];
-            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(salt);
-            }
-
-            string hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password,
-                salt,
-                KeyDerivationPrf.HMACSHA256,
-                10000,
-                256 / 8));
-
-            return hashedPassword;
         }
     }
 }

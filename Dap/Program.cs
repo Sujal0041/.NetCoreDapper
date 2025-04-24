@@ -53,7 +53,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
+app.UseAuthentication(); // Make sure Authentication middleware is placed before Authorization
 app.UseAuthorization();
 
 app.MapRazorPages();
