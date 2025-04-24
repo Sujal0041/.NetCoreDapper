@@ -6,6 +6,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Register UserService with IConfiguration-based constructor
 builder.Services.AddScoped<IUserService, UserService>();
 
@@ -36,6 +37,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
 });
 
 builder.Services.AddRazorPages();
@@ -53,7 +55,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication(); // Make sure Authentication middleware is placed before Authorization
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapRazorPages();

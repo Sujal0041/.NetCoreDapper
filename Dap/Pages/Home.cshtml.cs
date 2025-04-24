@@ -5,8 +5,13 @@ namespace Dap.Pages
 {
     public class HomeModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnPostLogout()
         {
+            // Delete the correct JWT cookie
+            Response.Cookies.Delete("jwtToken");
+
+            // Redirect to login page
+            return RedirectToPage("/Login");
         }
     }
 }
