@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Dap.Pages // Fixed namespace to match the folder structure
 {
+    
     public class FormModel : PageModel
     {
         private readonly IConfiguration _config;

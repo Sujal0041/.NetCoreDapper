@@ -1,6 +1,27 @@
-﻿@{
-    // Check if the JWT token exists in cookies to determine if the user is logged in
-    var isLoggedIn = Context.Request.Cookies["jwtToken"] != null;
+﻿@using System.IdentityModel.Tokens.Jwt
+@using System.Security.Claims
+@{
+    var token = Context.Request.Cookies["jwtToken"];
+    bool isLoggedIn = false;
+    bool isAdmin = false;
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var roleClaim = jwtToken.Claims.FirstOrDefault(c =>
+                c.Type == ClaimTypes.Role || c.Type == "role");
+
+            isLoggedIn = true;
+            isAdmin = roleClaim?.Value == "Admin";
+        }
+        catch
+        {
+            isLoggedIn = false;
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -15,29 +36,33 @@
 </head>
 <body>
     <header>
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">Home</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/">Dap</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <!-- Show DB link if the user is authenticated -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                         @if (isLoggedIn)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Form">Form</a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" href="/DB">DB</a>
+                                <a class="nav-link" href="/Home">Home</a>
                             </li>
 
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Form">Form</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/DB">DB</a>
+                                </li>
+                            }
                         }
 
-                        <!-- Show Login and Sign Up links if the user is not authenticated -->
                         @if (!isLoggedIn)
                         {
                             <li class="nav-item">
@@ -48,15 +73,14 @@
                             </li>
                         }
 
-                        <!-- Show Logout button if the user is authenticated -->
-                         @if (isLoggedIn) 
-                         { 
-                            <li class="nav-item"> 
-                                 <form method="post" asp-page-handler="Logout" class="form-inline"> 
-                                     <button type="submit" class="btn btn-danger">Log Out</button> 
-                                 </form> 
-                             </li> 
-                         } 
+                        @if (isLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-page-handler="Logout" class="form-inline">
+                                    <button type="submit" class="btn btn-danger">Log Out</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

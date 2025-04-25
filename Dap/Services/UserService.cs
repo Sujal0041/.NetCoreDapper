@@ -47,14 +47,9 @@
         // Retrieves a user by email and password
         public async Task<AppUser?> GetUser(string email, string password)
         {
-            using var connection = new NpgsqlConnection(_connectionString); // Create a new database connection
-
-            // SQL query to find a user with the given email and password
+            using var connection = new NpgsqlConnection(_connectionString);
             var query = "SELECT * FROM users WHERE email = @Email AND passwordhash = @Password";
-
-            // Execute the query and return the user if found, otherwise null
-            var user = await connection.QuerySingleOrDefaultAsync<AppUser>(query, new { Email = email, Password = password });
-            return user;
+            return await connection.QuerySingleOrDefaultAsync<AppUser>(query, new { Email = email, Password = password });
         }
     }
     }

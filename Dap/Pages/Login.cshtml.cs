@@ -53,56 +53,45 @@ namespace Dap.Pages
             return Page();
         }
 
-
         // Handles POST requests for login form submission
         public async Task<IActionResult> OnPostAsync()
         {
-            // Validate user credentials using the user service
             var user = await _userService.GetUser(Email, Password);
             if (user == null)
             {
-                // Set error message if credentials are invalid
                 ErrorMessage = "Invalid credentials.";
                 return Page();
             }
 
-            // Create claims for the JWT token
-            var claims = new[]
-            {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email), // Subject claim with user's email
-                    new Claim("role", user.Role), // Custom claim for user role
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Unique identifier for the token
-                };
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(ClaimTypes.Role, user.Role),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+    };
 
-            // Generate a symmetric security key using the secret key from settings
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
-
-            // Create signing credentials using the security key and HMAC-SHA256 algorithm
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            // Create the JWT token with issuer, audience, claims, expiration, and signing credentials
             var token = new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer, // Token issuer
-                audience: _jwtSettings.Audience, // Token audience
-                claims: claims, // Claims to include in the token
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes), // Token expiration time
-                signingCredentials: creds // Signing credentials
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
+                signingCredentials: creds
             );
 
-            // Serialize the token to a string
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            // Append the token to the response cookies with secure options
             Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
             {
-                HttpOnly = true, // Prevent client-side scripts from accessing the cookie
-                Secure = true, // Ensure the cookie is sent over HTTPS
-                SameSite = SameSiteMode.Strict, // Restrict cross-site requests
-                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes) // Set cookie expiration
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes)
             });
 
-            // Redirect the user to the home page after successful login
             return RedirectToPage("/Home");
         }
+
     }
 }
