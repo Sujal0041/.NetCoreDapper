@@ -5,10 +5,9 @@ using Npgsql;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 
-
-namespace Dap.Pages // Fixed namespace to match the folder structure
+namespace Dap.Pages
 {
-    
+    [Authorize(Policy = "AdminOnly")]
     public class FormModel : PageModel
     {
         private readonly IConfiguration _config;
@@ -18,7 +17,6 @@ namespace Dap.Pages // Fixed namespace to match the folder structure
             _config = config;
             Branch = new Branch
             {
-
                 ParentId = string.Empty,
                 Alias = string.Empty,
                 FullName = string.Empty,
@@ -52,15 +50,15 @@ namespace Dap.Pages // Fixed namespace to match the folder structure
 
             try
             {
-                    using var conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection"));
-                    string sql = @"
-                        INSERT INTO formdata (
-                            IsCorporate, ParentId, Alias, FullName, PuraName, ShortName, StreetName, StreetNameLocale,
-                            WardNumber, WardNumberLocale, LocalMNC, LocalMNC_Locale, City, City_Locale, District, District_Locale
-                        ) VALUES (
-                            @IsCorporate, @ParentId, @Alias, @FullName, @PuraName, @ShortName, @StreetName, @StreetNameLocale,
-                            @WardNumber, @WardNumberLocale, @LocalMNC, @LocalMNC_Locale, @City, @City_Locale, @District, @District_Locale
-                        );";
+                using var conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection"));
+                string sql = @"
+                    INSERT INTO formdata (
+                        IsCorporate, ParentId, Alias, FullName, PuraName, ShortName, StreetName, StreetNameLocale,
+                        WardNumber, WardNumberLocale, LocalMNC, LocalMNC_Locale, City, City_Locale, District, District_Locale
+                    ) VALUES (
+                        @IsCorporate, @ParentId, @Alias, @FullName, @PuraName, @ShortName, @StreetName, @StreetNameLocale,
+                        @WardNumber, @WardNumberLocale, @LocalMNC, @LocalMNC_Locale, @City, @City_Locale, @District, @District_Locale
+                    );";
 
                 conn.Execute(sql, Branch);
                 return RedirectToPage("/Success");

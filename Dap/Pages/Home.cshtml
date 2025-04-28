@@ -1,40 +1,48 @@
 ﻿@page
 @model Dap.Pages.HomeModel
 
-<div class="text-center">
-    <h1 class="display-3">Welcome</h1>
-    <p style="font-size:20px">
-
-        @if (Model.UserRole == "Admin")
-
-        {
-            <span>Hello <b>Admin</b></span>
-            <br />
-            <span>You can add, delete, and modify because you are not just a user, you are a super user.</span>
-            <br />
-            <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-info mx-2" onclick="location.href='/Form'">
-                    <img src="https://img.icons8.com/?size=100&id=S1RK2Nhn2FC5&format=png&color=000000" alt="Form Icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                    Form
-                </button>
-                <button class="btn btn-info mx-2" onclick="location.href='/DB'">
-                    <img src="https://img.icons8.com/?size=100&id=NFQusZJ4neki&format=png&color=000000" alt="Table Icon" style="width: 20px; height: 20px; margin-right: 5px;">
-                    Table
-                </button>
-            </div>
-
-        }
-        else if (Model.UserRole == "User")
-               {
-                   <span>Hello <b>User</b></span>
-                   <br/>
-                   <span>You too can become an admin. To become an admin, click the button below:</span>
-                   <br/>
-                   <div class="d-flex justify-content-center mt-3">
-                <button class="btn btn-primary" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">
-                           Make me Admin
-                       </button>
-                   </div>
-               }
-    </p>
+<div class="container py-5">
+    <div class="card shadow-lg border-0 mx-auto" style="max-width: 600px; border-radius: 15px;">
+        <div class="card-body text-center p-5">
+            <h1 class="display-4 fw-bold text-primary mb-4">Welcome</h1>
+            <p class="fs-4 text-muted">
+                @if (Model.UserRole == "Admin")
+                {
+                    <span class="fw-semibold text-dark">Hello <b>Admin</b></span>
+                    <br />
+                    <span>You have superpowers to add, delete, and modify content!</span>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="/Form" class="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=S1RK2Nhn2FC5&format=png&color=000000" alt="Form Icon" style="width: 24px; height: 24px;">
+                            Form
+                        </a>
+                        <a href="/DB" class="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=NFQusZJ4neki&format=png&color=000000" alt="Table Icon" style="width: 24px; height: 24px;">
+                            Table
+                        </a>
+                    </div>
+                }
+                else if (Model.UserRole == "User")
+                {
+                    <span class="fw-semibold text-dark">Hello <b>User</b></span>
+                    <br />
+                    <span>Want to unlock admin powers? Click below!</span>
+                    <div class="d-flex justify-content-center mt-4">
+                        <button class="btn btn-success btn-lg px-5" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">
+                            Make me Admin
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <span class="fw-semibold text-dark">Hello <b>Guest</b></span>
+                    <br />
+                    <span>Log in to unlock exclusive features!</span>
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="/Login" class="btn btn-outline-primary btn-lg px-5">Log In</a>
+                    </div>
+                }
+            </p>
+        </div>
+    </div>
 </div>
