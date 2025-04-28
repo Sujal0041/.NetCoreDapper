@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dap.Pages
 {
-    [Authorize]
+    
     public class ViewEntriesModel : PageModel
     {
         private readonly IConfiguration _config;
