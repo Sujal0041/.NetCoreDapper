@@ -29,41 +29,64 @@
                <th>District_Locale</th>  
                <th>Actions</th>  
            </tr>  
-       </thead>  
-       <tbody>  
-           @foreach (var entry in Model.Entries)  
-           {  
-               <tr>  
-                   <td>@entry.Id</td>  
-                   <td>@entry.IsCorporate</td>  
-                   <td>@entry.ParentId</td>  
-                   <td>@entry.Alias</td>  
-                   <td>@entry.FullName</td>  
-                   <td>@entry.PuraName</td>  
-                   <td>@entry.ShortName</td>  
-                   <td>@entry.StreetName</td>  
-                   <td>@entry.StreetNameLocale</td>  
-                   <td>@entry.WardNumber</td>  
-                   <td>@entry.WardNumberLocale</td>  
-                   <td>@entry.LocalMNC</td>  
-                   <td>@entry.LocalMNC_Locale</td>  
-                   <td>@entry.City</td>  
-                   <td>@entry.City_Locale</td>  
-                   <td>@entry.District</td>  
-                   <td>@entry.District_Locale</td>  
-                   <td>  
-                       <form method="post" asp-page-handler="Delete">  
-                           <input type="hidden" name="id" value="@entry.Id" />  
-                           <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?');">  
-                               Delete  
-                           </button>  
-                           <a href="/upd/@entry.Id" class="btn btn-warning btn-sm">Edit</a>  
-                       </form>  
+       </thead>
+        <tbody id="entries-table-body">
+            @foreach (var entry in Model.Entries)
+            {
+                <tr>
+                    <td>@entry.Id</td>
+                    <td>@entry.IsCorporate</td>
+                    <td>@entry.ParentId</td>
+                    <td>@entry.Alias</td>
+                    <td>@entry.FullName</td>
+                    <td>@entry.PuraName</td>
+                    <td>@entry.ShortName</td>
+                    <td>@entry.StreetName</td>
+                    <td>@entry.StreetNameLocale</td>
+                    <td>@entry.WardNumber</td>
+                    <td>@entry.WardNumberLocale</td>
+                    <td>@entry.LocalMNC</td>
+                    <td>@entry.LocalMNC_Locale</td>
+                    <td>@entry.City</td>
+                    <td>@entry.City_Locale</td>
+                    <td>@entry.District</td>
+                    <td>@entry.District_Locale</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="id" value="@entry.Id" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?');">
+                                Delete
+                            </button>
+                            <a href="/upd/@entry.Id" class="btn btn-warning btn-sm">Edit</a>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
 
+   </table>
 
-                   </td>  
-               </tr>  
-           }  
-       </tbody>  
-   </table>  
+    <button type="button" id="refresh-btn" class="btn btn-primary">Refresh</button>
+
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#refresh-btn').click(function () {
+                $.ajax({
+                    url: '@Url.Page("DB", "Refresh")', 
+                    type: 'GET',
+                    success: function (data) {
+                        $('#entries-table-body').html(data); // Replace the table body
+                    },
+                    error: function () {
+                        alert('Error refreshing data.');
+                    }
+                });
+            });
+        });
+    </script>
+}
+

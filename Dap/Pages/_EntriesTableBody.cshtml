@@ -1,0 +1,28 @@
+﻿@model List<Dap.Pages.Entry>
+
+@foreach (var entry in Model)
+{
+    <tr>
+        <td>@entry.Id</td>
+        <td>@entry.IsCorporate</td>
+        <td>@entry.ParentId</td>
+        <td>@entry.Alias</td>
+        <td>@entry.FullName</td>
+        <td>@entry.PuraName</td>
+        <td>@entry.ShortName</td>
+        <td>@entry.StreetName</td>
+        <td>@entry.StreetNameLocale</td>
+        <td>@entry.WardNumber</td>
+        <td>@entry.WardNumberLocale</td>
+        <td>@entry.LocalMNC</td>
+        <td>@entry.LocalMNC_Locale</td>
+        <td>@entry.City</td>
+        <td>@entry.City_Locale</td>
+        <td>@entry.District</td>
+        <td>@entry.District_Locale</td>
+        <td>
+            <button class="btn btn-danger btn-sm delete-btn" data-id="@entry.Id">Delete</button>
+            <a href="/upd/@entry.Id" class="btn btn-warning btn-sm">Edit</a>
+        </td>
+    </tr>
+}

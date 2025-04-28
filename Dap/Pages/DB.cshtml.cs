@@ -40,6 +40,50 @@ namespace Dap.Pages
                 return Page();
             }
         }
+
+        public async Task<IActionResult> OnGetRefreshAsync()
+        {
+            using var conn = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection"));
+            string sql = "SELECT * FROM formdata ORDER BY id";
+            var entries = await conn.QueryAsync<Entry>(sql);
+
+            var html = new System.Text.StringBuilder();
+
+            foreach (var entry in entries)
+            {
+                html.AppendLine("<tr>");
+                html.AppendLine($"<td>{entry.Id}</td>");
+                html.AppendLine($"<td>{entry.IsCorporate}</td>");
+                html.AppendLine($"<td>{entry.ParentId}</td>");
+                html.AppendLine($"<td>{entry.Alias}</td>");
+                html.AppendLine($"<td>{entry.FullName}</td>");
+                html.AppendLine($"<td>{entry.PuraName}</td>");
+                html.AppendLine($"<td>{entry.ShortName}</td>");
+                html.AppendLine($"<td>{entry.StreetName}</td>");
+                html.AppendLine($"<td>{entry.StreetNameLocale}</td>");
+                html.AppendLine($"<td>{entry.WardNumber}</td>");
+                html.AppendLine($"<td>{entry.WardNumberLocale}</td>");
+                html.AppendLine($"<td>{entry.LocalMNC}</td>");
+                html.AppendLine($"<td>{entry.LocalMNC_Locale}</td>");
+                html.AppendLine($"<td>{entry.City}</td>");
+                html.AppendLine($"<td>{entry.City_Locale}</td>");
+                html.AppendLine($"<td>{entry.District}</td>");
+                html.AppendLine($"<td>{entry.District_Locale}</td>");
+                html.AppendLine("<td>");
+                html.AppendLine($"<form method=\"post\" asp-page-handler=\"Delete\">");
+                html.AppendLine($"<input type=\"hidden\" name=\"id\" value=\"{entry.Id}\" />");
+                html.AppendLine($"<button type=\"submit\" class=\"btn btn-danger btn-sm\" onclick=\"return confirm('Are you sure you want to delete this entry?');\">Delete</button>");
+                html.AppendLine($"<a href=\"/upd/{entry.Id}\" class=\"btn btn-warning btn-sm\">Edit</a>");
+                html.AppendLine("</form>");
+                html.AppendLine("</td>");
+                html.AppendLine("</tr>");
+            }
+
+            return Content(html.ToString(), "text/html");
+        }
+
+
+
     }
     public class Entry
     {
