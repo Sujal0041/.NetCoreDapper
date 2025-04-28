@@ -2,8 +2,39 @@
 @model Dap.Pages.HomeModel
 
 <div class="text-center">
-    <h1 class="display-1">Welcome</h1>
-    <p style="font-size:70px">Your role: - @Model.UserRole</p>
-     
-    
+    <h1 class="display-3">Welcome</h1>
+    <p style="font-size:20px">
+
+        @if (Model.UserRole == "Admin")
+
+        {
+            <span>Hello <b>Admin</b></span>
+            <br />
+            <span>You can add, delete, and modify because you are not just a user, you are a super user.</span>
+            <br />
+            <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-info mx-2" onclick="location.href='/Form'">
+                    <img src="https://img.icons8.com/?size=100&id=S1RK2Nhn2FC5&format=png&color=000000" alt="Form Icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                    Form
+                </button>
+                <button class="btn btn-info mx-2" onclick="location.href='/DB'">
+                    <img src="https://img.icons8.com/?size=100&id=NFQusZJ4neki&format=png&color=000000" alt="Table Icon" style="width: 20px; height: 20px; margin-right: 5px;">
+                    Table
+                </button>
+            </div>
+
+        }
+        else if (Model.UserRole == "User")
+               {
+                   <span>Hello <b>User</b></span>
+                   <br/>
+                   <span>You too can become an admin. To become an admin, click the button below:</span>
+                   <br/>
+                   <div class="d-flex justify-content-center mt-3">
+                <button class="btn btn-primary" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">
+                           Make me Admin
+                       </button>
+                   </div>
+               }
+    </p>
 </div>
